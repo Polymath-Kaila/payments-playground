@@ -34,3 +34,11 @@ def transition_payment_state(
         event_type=event_type,
         payload=payload or {},
     )
+
+class PaymentProviderService:
+    """
+    Base interface for payment providers.
+    """
+
+    def initiate_payment(self, transaction: PaymentTransaction, **kwargs):
+        raise NotImplementedError
