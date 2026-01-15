@@ -82,3 +82,19 @@ We introduce:
 + transition validation
 
 We must prevent edge cases like, double refund, double charge etc.  
+
+---
+## STATES ALLOWED TRANSITIONS
+| From              | To | Allowed? |
+| ----------------- | -- | -------- |
+| CREATED → PENDING | ✅  |          |
+| PENDING → SUCCESS | ✅  |          |
+| PENDING → FAILED  | ✅  |          |
+| CREATED → SUCCESS | ❌  |          |
+| SUCCESS → PENDING | ❌  |          |
+| FAILED → SUCCESS  | ❌  |          |
+
+---
+We handle this explicitly in a service file say base.py because:  
+1. In views we handle http requests so any code can modify state.  
+2. In serializers we handle validations and they should be readonly so business logic will interfere with our state machine.  
