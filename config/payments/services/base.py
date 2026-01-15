@@ -28,4 +28,9 @@ def transition_payment_state(
     transaction.status = new_status
     transaction.updated_at = timezone.now()
     transaction.save(update_fields=["status", "updated_at"])
-    
+
+    PaymentEvent.objects.create(
+        transaction=transaction,
+        event_type=event_type,
+        payload=payload or {},
+    )
