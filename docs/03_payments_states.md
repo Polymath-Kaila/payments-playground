@@ -68,3 +68,17 @@ If we skip `PENDING` we will:
 + Create race conditions
 
 ---
+
+A payment state must only change through a controlled function.  
+Not views.  
+Not serializers.  
+Not admin edits.  
+
+## Strategy to tackling it
+We introduce:  
++ A service layer
++ A transition function
++ Automatic event creation
++ transition validation
+
+We must prevent edge cases like, double refund, double charge etc.  
