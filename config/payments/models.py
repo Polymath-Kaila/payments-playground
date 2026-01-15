@@ -72,3 +72,29 @@ class PaymentTransaction(models.Model):
 
     def __str__(self):
         return f"{self.reference} ({self.status})"
+    
+    class PaymentEvent(models.Model):
+        """
+        Immutable log of every significant event in a payment lifecycle.
+        this models is simply history
+        """
+
+        transaction = models.ForeignKey(
+            PaymentTransaction,
+            on_delete=models.CASCADE,
+            related_name="events"
+        )
+
+        event_type = models.CharField(
+            max_length=100,
+            help_text="e.g STK_PUSH_SENT, WEBHOOK_RECEIVED"
+        )
+
+        payload = models.JSONField(
+            help_text="Raw event payload"
+        )
+
+        created_at = models.DateTimeField(default=timezone.now)
+
+        class Meta:
+            ordering = ["created_at"]
