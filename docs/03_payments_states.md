@@ -68,3 +68,33 @@ If we skip `PENDING` we will:
 + Create race conditions
 
 ---
+
+A payment state must only change through a controlled function.  
+Not views.  
+Not serializers.  
+Not admin edits.  
+
+## Strategy to tackling it
+We introduce:  
++ A service layer
++ A transition function
++ Automatic event creation
++ transition validation
+
+We must prevent edge cases like, double refund, double charge etc.  
+
+---
+## STATES ALLOWED TRANSITIONS
+| From              | To | Allowed? |
+| ----------------- | -- | -------- |
+| CREATED → PENDING | ✅  |          |
+| PENDING → SUCCESS | ✅  |          |
+| PENDING → FAILED  | ✅  |          |
+| CREATED → SUCCESS | ❌  |          |
+| SUCCESS → PENDING | ❌  |          |
+| FAILED → SUCCESS  | ❌  |          |
+
+---
+We handle this explicitly in a service file say base.py because:  
+1. In views we handle http requests so any code can modify state.  
+2. In serializers we handle validations and they should be readonly so business logic will interfere with our state machine.  

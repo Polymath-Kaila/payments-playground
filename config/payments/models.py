@@ -26,7 +26,7 @@ class PaymentTransaction(models.Model):
     prevents double processing
     """
     reference = models.CharField(
-        max_lenth=100,
+        max_length=100,
         unique=True,
         default=uuid.uuid4,
         editable=False,
@@ -56,7 +56,7 @@ class PaymentTransaction(models.Model):
 
     raw_request = models.JSONField(
         null=True,
-        blandk=True,
+        blank=True,
         help_text = "Initial request payload sent to provider"
     )
 
@@ -80,7 +80,7 @@ class PaymentTransaction(models.Model):
         """
 
         transaction = models.ForeignKey(
-            PaymentTransaction,
+            "PaymentTransaction",
             on_delete=models.CASCADE,
             related_name="events"
         )
